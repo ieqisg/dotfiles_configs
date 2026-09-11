@@ -1,0 +1,396 @@
+/* =========================================
+   Waybar Theme
+   Generated from wal colors
+   ========================================= */
+
+/* Special */
+@define-color background #191919;
+@define-color foreground #c5c5c5;
+@define-color cursor     #c5c5c5;
+
+/* Colors */
+@define-color color0  #191919;
+@define-color color1  #3a3632;
+@define-color color2  #582c1e;
+@define-color color3  #423f39;
+@define-color color4  #50473c;
+@define-color color5  #634723;
+@define-color color6  #5a5149;
+@define-color color7  #8c8c8c;
+@define-color color8  #525252;
+@define-color color9  #4e4843;
+@define-color color10 #763b28;
+@define-color color11 #59554c;
+@define-color color12 #6b5f51;
+@define-color color13 #855f2f;
+@define-color color14 #796d62;
+@define-color color15 #c5c5c5;
+
+/* Active color */
+@define-color active @color6;
+
+
+/* =========================================
+   Global
+   ========================================= */
+
+* {
+  font-size: 16px;
+  font-family: "JetBrainsMono Nerd Font";
+  min-width: 8px;
+  min-height: 0;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  text-shadow: none;
+  padding: 0;
+}
+
+
+/* =========================================
+   Waybar
+   ========================================= */
+
+window#waybar {
+  transition-property: background-color;
+  transition-duration: 0.5s;
+
+  border-radius: 8px;
+  border: 2px solid @active;
+
+  background-color: alpha(@background, 0.7);
+  color: lighter(@active);
+}
+
+
+/* =========================================
+   Menus / Tooltips
+   ========================================= */
+
+menu,
+tooltip {
+  border-radius: 8px;
+  padding: 2px;
+
+  border: 1px solid lighter(@active);
+  background-color: alpha(@background, 0.6);
+
+  color: lighter(@active);
+}
+
+menu label,
+tooltip label {
+  font-size: 14px;
+  color: lighter(@active);
+}
+
+
+/* =========================================
+   Animations
+   ========================================= */
+
+#submap,
+#tray > .needs-attention {
+  animation-name: blink-active;
+  animation-duration: 1s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+
+
+/* =========================================
+   Module Containers
+   ========================================= */
+
+.modules-right {
+  margin: 0 6px 6px 6px;
+  border-radius: 4px;
+
+  background-color: alpha(@background, 0.4);
+  color: lighter(@active);
+}
+
+.modules-left {
+  transition-property: background-color;
+  transition-duration: 0.5s;
+
+  margin: 6px;
+  border-radius: 4px;
+
+  background-color: alpha(@background, 0.4);
+  color: lighter(@active);
+}
+
+
+/* =========================================
+   Module Backgrounds
+   ========================================= */
+
+#gcpu,
+#custom-github,
+#memory,
+#disk,
+#together,
+#submap,
+#custom-weather,
+#custom-recorder,
+#connection,
+#cnoti,
+#brightness,
+#power,
+#custom-updates,
+#tray,
+#audio,
+#privacy,
+#sound {
+  border-radius: 4px;
+  margin: 2px 2px 4px 2px;
+
+  background-color: alpha(darker(@active), 0.3);
+}
+
+
+/* =========================================
+   Custom Modules
+   ========================================= */
+
+#custom-notifications {
+  padding-left: 4px;
+}
+
+#custom-hotspot,
+#custom-github,
+#custom-notifications {
+  font-size: 14px;
+}
+
+#custom-hotspot {
+  padding-right: 2px;
+}
+
+#custom-vpn,
+#custom-hotspot {
+  background-color: alpha(darker(@active), 0.3);
+}
+
+#privacy-item {
+  padding: 6px 0 6px 6px;
+}
+
+#gcpu {
+  padding: 8px 0;
+}
+
+#custom-cpu-icon {
+  font-size: 25px;
+}
+
+#custom-cputemp,
+#disk,
+#memory,
+#cpu {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+#custom-github {
+  padding-top: 2px;
+  padding-right: 4px;
+}
+
+#custom-dmark {
+  color: alpha(@foreground, 0.3);
+}
+
+
+/* =========================================
+   Submap
+   ========================================= */
+
+#submap {
+  min-width: 0;
+  margin: 4px 6px;
+  margin-bottom: 0;
+}
+
+
+/* =========================================
+   Workspaces
+   ========================================= */
+
+#workspaces {
+  margin: 0 2px;
+  padding: 4px 0 0 0;
+  border-radius: 8px;
+}
+
+#workspaces button {
+  transition-property: background-color;
+  transition-duration: 0.5s;
+
+  color: alpha(@foreground, 0.3);
+  background: transparent;
+
+  border-radius: 4px;
+}
+
+#workspaces button.urgent {
+  font-weight: bold;
+  color: @foreground;
+}
+
+#workspaces button.active {
+  padding: 4px 2px;
+
+  background-color: alpha(@active, 0.4);
+  color: lighter(@active);
+
+  border-radius: 4px;
+}
+
+
+/* =========================================
+   Network
+   ========================================= */
+
+#network.wifi {
+  padding-right: 4px;
+}
+
+
+/* =========================================
+   Weather / Tray / Bluetooth
+   ========================================= */
+
+#custom-weather,
+#tray {
+  padding: 4px 0;
+}
+
+#bluetooth {
+  padding-top: 2px;
+}
+
+
+/* =========================================
+   Battery
+   ========================================= */
+
+#battery {
+  border-radius: 8px;
+  padding: 4px 0;
+  margin: 4px 2px;
+}
+
+#battery.discharging.warning {
+  animation-name: blink-yellow;
+  animation-duration: 1s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+
+#battery.discharging.critical {
+  animation-name: blink-red;
+  animation-duration: 1s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+
+
+/* =========================================
+   Clock
+   ========================================= */
+
+#clock {
+  font-weight: bold;
+  padding: 4px 2px 2px 2px;
+}
+
+
+/* =========================================
+   PulseAudio
+   ========================================= */
+
+#pulseaudio.mic {
+  border-radius: 4px;
+
+  color: @background;
+  background-color: alpha(darker(@foreground), 0.6);
+
+  padding-left: 4px;
+}
+
+
+/* =========================================
+   Sliders
+   ========================================= */
+
+#backlight-slider slider,
+#pulseaudio-slider slider {
+  background-color: transparent;
+  box-shadow: none;
+}
+
+#backlight-slider trough,
+#pulseaudio-slider trough {
+  margin-top: 4px;
+
+  min-width: 6px;
+  min-height: 60px;
+
+  border-radius: 8px;
+  background-color: alpha(@background, 0.6);
+}
+
+#backlight-slider highlight,
+#pulseaudio-slider highlight {
+  border-radius: 8px;
+  background-color: lighter(@active);
+}
+
+
+/* =========================================
+   Bluetooth States
+   ========================================= */
+
+#bluetooth.discoverable,
+#bluetooth.discovering,
+#bluetooth.pairable {
+  border-radius: 8px;
+
+  animation-name: blink-active;
+  animation-duration: 1s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+
+
+/* =========================================
+   Keyframes
+   ========================================= */
+
+@keyframes blink-active {
+  to {
+    background-color: @active;
+    color: @foreground;
+  }
+}
+
+@keyframes blink-red {
+  to {
+    background-color: #c64d4f;
+    color: @foreground;
+  }
+}
+
+@keyframes blink-yellow {
+  to {
+    background-color: #cf9022;
+    color: @foreground;
+  }
+}
+

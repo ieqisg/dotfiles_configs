@@ -1,0 +1,422 @@
+-- ==========================
+-- init.lua
+-- Leader & Basic Settings
+-- ==========================
+vim.g.mapleader = " "
+vim.g.maplocalleader = " "
+vim.opt.ignorecase = true
+vim.opt.number = true
+vim.opt.relativenumber = true
+vim.opt.cursorline = true
+vim.opt.signcolumn = "yes"
+vim.opt.clipboard = "unnamedplus"
+vim.opt.guicursor = "a:block"
+vim.opt.expandtab = true
+vim.opt.tabstop = 2
+vim.opt.shiftwidth = 2
+vim.opt.smartindent = true
+
+-- Cursor highlight (red block)
+vim.api.nvim_set_hl(0, "Cursor", { bg = "red", fg = "black" })
+vim.api.nvim_create_autocmd("ColorScheme", {
+  callback = function()
+    vim.api.nvim_set_hl(0, "Cursor", { bg = "red", fg = "black" })
+  end,
+})
+
+-- ==========================
+-- Bootstrap lazy.nvim
+-- ==========================
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not vim.uv.fs_stat(lazypath) then
+  vim.fn.system({
+    "git",
+    "clone",
+    "--filter=blob:none",
+    "https://github.com/folke/lazy.nvim.git",
+    "--branch=stable",
+    lazypath,
+  })
+end
+vim.opt.rtp:prepend(lazypath)
+
+-- ==========================
+-- Plugins
+-- ==========================
+require("lazy").setup({
+  -- Treesitter + autotag
+  {
+    "nvim-treesitter/nvim-treesitter",
+    branch = "main",
+    build = ":TSUpdate",
+    dependencies = { "windwp/nvim-ts-autotag" },
+    config = function()
+      local ok, ts = pcall(require, "nvim-treesitter")
+      if not ok then
+        vim.notify("nvim-treesitter failed to load", vim.log.levels.ERROR)
+        return
+      end
+
+      ts.setup()
+
+      local ts_filetypes = {
+        "html", "javascript", "typescript", "tsx",
+        "vue", "svelte", "php", "xml", "json", "css", "lua",
+      }
+
+      if ts.install then
+        ts.install(ts_filetypes)
+      else
+        vim.notify(
+          "nvim-treesitter: run :TSUpdate, then restart Neovim to finish setup",
+          vim.log.levels.WARN
+        )
+      end
+
+      local group = vim.api.nvim_create_augroup("TreesitterFtSetup", { clear = true })
+      vim.api.nvim_create_autocmd("FileType", {
+        group = group,
+        pattern = ts_filetypes,
+        callback = function(args)
+          local started = pcall(vim.treesitter.start, args.buf)
+          if started then
+            vim.bo[args.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+          end
+        end,
+      })
+
+      require("nvim-ts-autotag").setup({
+        opts = {
+          enable_close = true,
+          enable_rename = true,
+          enable_close_on_slash = false,
+        },
+      })
+    end,
+  },
+
+  -- Highlight matching tags
+  { "andymass/vim-matchup",        event = "BufReadPost" },
+
+  -- ==========================
+  -- Moonlight Colorscheme
+  -- ==========================
+  {
+    "shaunsingh/moonlight.nvim",
+    lazy = false,
+    priority = 1000,
+    config = function()
+      -- Moonlight global settings
+      vim.g.moonlight_italic_comments = true
+      vim.g.moonlight_italic_keywords = false
+      vim.g.moonlight_italic_functions = false
+      vim.g.moonlight_italic_variables = false
+      vim.g.moonlight_contrast = true
+      vim.g.moonlight_borders = false
+      vim.g.moonlight_disable_background = true
+
+      -- Load colorscheme
+      require("moonlight").set()
+
+      -- Custom Highlights (AFTER colorscheme loads)
+      local function custom_highlights()
+        local colors = require("moonlight.colors")
+        local set = vim.api.nvim_set_hl
+
+        -- UI
+        set(0, "CursorLine", { bg = "#1c1e2b" })                -- deep navy-gray
+        set(0, "LineNr", { fg = "#6b7089" })                    -- cool gray
+        set(0, "CursorLineNr", { fg = "#89b4fa", bold = true }) -- icy blue
+        set(0, "Visual", { bg = "#3a3f5c" })                    -- muted indigo
+
+        -- Cursor (moonlit teal glow)
+        set(0, "Cursor", { bg = "#5de4c7", fg = "#1c1e2b" })
+
+        -- Comments
+        set(0, "Comment", { fg = "#a6accd", italic = true }) -- silvery mist
+
+        -- Keywords
+        set(0, "Keyword", { fg = "#c792ea", bold = true }) -- violet
+
+        -- Functions
+        set(0, "Function", { fg = "#82aaff", bold = true }) -- sky blue for normal functions
+        set(0, "@function.call", { fg = "#c792ea" })        -- violet for user-defined calls (like setSearchTerm)
+        set(0, "@method", { fg = "#82aaff" })               -- keep methods sky blue
+
+        -- Strings
+        set(0, "String", { fg = "#9ece6a" }) -- soft green
+
+        -- Variables
+        set(0, "@variable", { fg = "#ffcb6b" })                      -- golden yellow for normal variables
+        set(0, "@variable.builtin", { fg = "#5de4c7", bold = true }) -- teal glow for built-ins
+        set(0, "@parameter", { fg = "#f78c6c" })                     -- coral orange for arguments
+
+        -- Properties
+        set(0, "@field", { fg = "#7dcfff" }) -- aqua
+        set(0, "@property", { fg = "#7dcfff" })
+
+        -- Constants
+        set(0, "@constant", { fg = "#f7768e", bold = true }) -- muted rose
+
+        -- Booleans
+        set(0, "@boolean", { fg = "#c792ea", bold = true }) -- violet
+
+        -- Numbers
+        set(0, "@number", { fg = "#f5a97f" }) -- peach-orange
+
+        -- Operators
+        set(0, "@operator", { fg = "#89b4fa" }) -- icy blue
+
+        -- Types
+        set(0, "@type", { fg = "#5de4c7", bold = true })            -- teal
+        set(0, "@type.builtin", { fg = "#82aaff", italic = true })  -- sky blue
+        set(0, "@type.definition", { fg = "#c792ea", bold = true }) -- violet
+      end
+
+      -- Apply immediately
+      custom_highlights()
+
+      -- Reapply on colorscheme reload
+      vim.api.nvim_create_autocmd("ColorScheme", {
+        pattern = "moonlight",
+        callback = custom_highlights,
+      })
+    end,
+  }, -- Terminal
+  {
+    "akinsho/toggleterm.nvim",
+    version = "*",
+    config = function()
+      require("toggleterm").setup({
+        open_mapping = [[<C-\>]],
+        direction = "float",
+        float_opts = { border = "rounded" },
+      })
+    end,
+  },
+
+  -- Comment
+  {
+    "numToStr/Comment.nvim",
+    dependencies = { "JoosepAlviste/nvim-ts-context-commentstring" },
+    config = function()
+      require("Comment").setup({
+        pre_hook = require("ts_context_commentstring.integrations.comment_nvim").create_pre_hook(),
+      })
+    end,
+  },
+
+  -- Indent guides
+  {
+    "lukas-reineke/indent-blankline.nvim",
+    main = "ibl",
+    config = function()
+      require("ibl").setup({
+        indent = { char = "│" },
+        scope = { enabled = true, show_start = false, show_end = false },
+      })
+    end,
+  },
+
+  -- File explorer
+  {
+    "nvim-neo-tree/neo-tree.nvim",
+    branch = "v3.x",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "nvim-tree/nvim-web-devicons",
+      "MunifTanjim/nui.nvim",
+    },
+    config = function()
+      require("neo-tree").setup({})
+      vim.keymap.set("n", "<leader>e", "<cmd>Neotree toggle<CR>", { silent = true })
+    end,
+  },
+
+  -- Icons
+  { "nvim-tree/nvim-web-devicons", lazy = true },
+
+  -- Buffer tabs (VS Code-style)
+  {
+    "akinsho/bufferline.nvim",
+    version = "*",
+    dependencies = "nvim-tree/nvim-web-devicons",
+    config = function()
+      require("bufferline").setup({
+        options = {
+          mode = "buffers", -- THIS makes it behave like VS Code tabs
+          separator_style = "slant",
+          show_buffer_close_icons = true,
+          show_close_icon = false,
+          color_icons = true,
+          enforce_regular_tabs = false,
+          always_show_bufferline = true,
+        },
+      })
+    end,
+  },
+
+  -- Telescope
+  {
+    "nvim-telescope/telescope.nvim",
+    dependencies = { "nvim-lua/plenary.nvim" },
+    config = function()
+      local builtin = require("telescope.builtin")
+      vim.keymap.set("n", "<leader>ff", builtin.find_files, {})
+      vim.keymap.set("n", "<leader>fg", builtin.live_grep, {})
+      vim.keymap.set("n", "<leader>fb", builtin.buffers, {})
+    end,
+  },
+
+  -- LSP + Mason
+  { "williamboman/mason.nvim",          config = true },
+  { "williamboman/mason-lspconfig.nvim" },
+  { "neovim/nvim-lspconfig" },
+
+  -- Autocompletion
+  {
+    "hrsh7th/nvim-cmp",
+    dependencies = {
+      "hrsh7th/cmp-nvim-lsp",
+      "hrsh7th/cmp-buffer",
+      "hrsh7th/cmp-path",
+    },
+    config = function()
+      local cmp = require("cmp")
+      cmp.setup({
+        mapping = cmp.mapping.preset.insert({
+          ["<C-Space>"] = cmp.mapping.complete(),
+          ["<CR>"] = cmp.mapping.confirm({ select = true }),
+          ["<Tab>"] = cmp.mapping.select_next_item(),
+          ["<S-Tab>"] = cmp.mapping.select_prev_item(),
+        }),
+        sources = {
+          { name = "nvim_lsp" },
+          { name = "buffer" },
+          { name = "path" },
+        },
+      })
+    end,
+  },
+  {
+    "windwp/nvim-autopairs",
+    event = "InsertEnter",
+    dependencies = { "hrsh7th/nvim-cmp" },
+    config = function()
+      local npairs = require("nvim-autopairs")
+      npairs.setup({
+        check_ts = true, -- integrates with treesitter
+        enable_check_bracket_line = true,
+        map_cr = true,   -- map <CR> to confirm brackets
+      })
+
+      -- Integrate with nvim-cmp
+      local cmp_autopairs = require("nvim-autopairs.completion.cmp")
+      local cmp = require("cmp")
+      cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
+    end,
+  },
+
+  -- Formatting
+  {
+    "stevearc/conform.nvim",
+    event = "BufWritePre",
+    config = function()
+      require("conform").setup({
+        formatters_by_ft = {
+          javascript = { "prettier" },
+          javascriptreact = { "prettier" },
+          typescript = { "prettier" },
+          typescriptreact = { "prettier" },
+          html = { "prettier" },
+          css = { "prettier" },
+          json = { "prettier" },
+        },
+        format_on_save = { timeout_ms = 500, lsp_fallback = true },
+      })
+    end,
+  },
+}, {
+  install = { colorscheme = { "moonlight" } },
+  checker = { enabled = true, notify = false },
+  performance = {
+    rtp = {
+      disabled_plugins = {
+        "gzip",
+        "matchit",
+        "matchparen",
+        "netrwPlugin",
+        "tarPlugin",
+        "tohtml",
+        "tutor",
+        "zipPlugin",
+      },
+    },
+  },
+})
+
+-- ==========================
+-- LSP Setup
+-- ==========================
+local capabilities = require("cmp_nvim_lsp").default_capabilities()
+
+require("mason-lspconfig").setup({
+  ensure_installed = { "ts_ls", "tailwindcss", "pyright" },
+  automatic_enable = true,
+})
+
+local lspconfig = require("lspconfig")
+lspconfig.tsserver.setup({ capabilities = capabilities })
+lspconfig.tailwindcss.setup({ capabilities = capabilities })
+lspconfig.pyright.setup({ capabilities = capabilities })
+
+vim.o.updatetime = 250
+
+vim.api.nvim_create_autocmd("CursorHold", {
+  callback = function()
+    vim.diagnostic.open_float(nil, {
+      focusable = false,
+      close_events = { "BufLeave", "CursorMoved", "InsertEnter" },
+      border = "rounded",
+      source = "always",
+      prefix = "",
+    })
+  end,
+})
+
+-- ==========================
+-- Keymaps
+-- ==========================
+
+vim.keymap.set({ "n", "v" }, "<leader>c", '"+y', { desc = "Yank to system clipboard" })
+vim.keymap.set({ "n", "v" }, "<C-A-v>", '"+p', { desc = "Paste from system clipboard" })
+vim.keymap.set("n", "<leader>t1", "<cmd>1ToggleTerm<CR>", { desc = "Toggle terminal 1" })
+vim.keymap.set("n", "<leader>t2", "<cmd>2ToggleTerm<CR>", { desc = "Toggle terminal 2" })
+vim.keymap.set("n", "<leader>t3", "<cmd>3ToggleTerm<CR>", { desc = "Toggle terminal 3" })
+vim.keymap.set("n", "<leader>sv", ":vsplit<CR>", { desc = "Vertical Split" })
+-- Use Alt + Arrow Keys to move between splits
+vim.keymap.set("n", "<A-Left>", "<C-w>h", { desc = "Move to left split" })
+vim.keymap.set("n", "<A-Right>", "<C-w>l", { desc = "Move to right split" })
+vim.keymap.set("n", "<A-Up>", "<C-w>k", { desc = "Move to upper split" })
+vim.keymap.set("n", "<A-Down>", "<C-w>j", { desc = "Move to lower split" })
+
+
+-- Cycle buffers like VS Code tabs
+vim.keymap.set("n", "<A-l>", ":BufferLineCycleNext<CR>", { silent = true })
+vim.keymap.set("n", "<A-h>", ":BufferLineCyclePrev<CR>", { silent = true })
+
+-- Go to specific buffer (tab)
+vim.keymap.set("n", "<A-1>", ":BufferLineGoToBuffer 1<CR>", { silent = true })
+vim.keymap.set("n", "<A-2>", ":BufferLineGoToBuffer 2<CR>", { silent = true })
+vim.keymap.set("n", "<A-3>", ":BufferLineGoToBuffer 3<CR>", { silent = true })
+vim.keymap.set("n", "<A-4>", ":BufferLineGoToBuffer 4<CR>", { silent = true })
+vim.keymap.set("n", "<A-5>", ":BufferLineGoToBuffer 5<CR>", { silent = true })
+vim.keymap.set("n", "<A-6>", ":BufferLineGoToBuffer 6<CR>", { silent = true })
+vim.keymap.set("n", "<A-7>", ":BufferLineGoToBuffer 7<CR>", { silent = true })
+vim.keymap.set("n", "<A-8>", ":BufferLineGoToBuffer 8<CR>", { silent = true })
+vim.keymap.set("n", "<A-9>", ":BufferLineGoToBuffer 9<CR>", { silent = true })
+
+vim.keymap.set("n", "<A-w>", "<cmd>bd<CR>", { desc = "Close buffer" })
+
+vim.keymap.set("n", "<C-h>", ":%s/")
+vim.keymap.set("n", "<C-a>", "^", { desc = "Move to start of text on line" })

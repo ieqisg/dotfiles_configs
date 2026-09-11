@@ -1,0 +1,37 @@
+{
+  "layer": "top", // Waybar at top layer
+  "position": "top", // Waybar position (top|bottom|left|right)
+  "height": 16, // Waybar height (to be removed for auto height)
+  // "width": 1280, // Waybar width
+  "spacing": 8, // Gaps between modules (4px)
+  "margin-top": 8,
+  "margin-left": 8,
+  "margin-right": 8,
+  "mode": "dock",
+  "reload_style_on_change": true,
+  "include": [
+    "~/.config/waybar/layouts/mrnmoy-includes/modules.json",
+    "~/.config/waybar/layouts/mrnmoy-includes/quicklinks.json",
+    "~/.config/waybar/layouts/mrnmoy-includes/hardware.json",
+    "~/.config/waybar/layouts/mrnmoy-includes/media.json"
+  ],
+  "modules-left": [
+    "custom/appmenu",
+    "group/quicklinks",
+    "tray",
+    "hyprland/window"
+  ],
+  "modules-center": [
+    "hyprland/workspaces"
+  ],
+  "modules-right": [
+    "network",
+    // "mpd",
+    "group/media",
+    "group/hardware",
+    "clock",
+    "custom/notification"
+  ]
+}
+
+
