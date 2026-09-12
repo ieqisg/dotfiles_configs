@@ -65,7 +65,7 @@
         "cursor": true,
         "format-icons": {
             "active": "󰮯",
-            "persistent": "•",
+            "persistent": "",
             "empty": ""
          }
     },
@@ -75,7 +75,7 @@
             
         "format-icons": {
             "active": "󰮯",
-            "default": "",
+            "default": "1",
             "empty": ""
         },
 

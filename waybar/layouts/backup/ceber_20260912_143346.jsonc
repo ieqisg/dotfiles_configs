@@ -65,8 +65,8 @@
         "cursor": true,
         "format-icons": {
             "active": "󰮯",
-            "persistent": "•",
-            "empty": ""
+            "persistent": "1",
+            "empty": "2"
          }
     },
 

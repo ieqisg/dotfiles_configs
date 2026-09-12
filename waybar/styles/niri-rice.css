@@ -195,12 +195,17 @@ window#waybar.empty #clock {
     box-shadow: inset 2px 0px @gruv-orange;
 }
 
+#taskbar {
+  margin: 4px 0px;
+}
+
 #taskbar button {
-    padding: 5px 0;
+    padding: 4px 2px;        /* was 5px 0 */
+    min-width: 0;
+    font-size: 12px;
 }
 
 #taskbar button.active {
-    background: @mute-black;
     box-shadow: inset 2px 0px @gruv-lime;
 }
 
@@ -271,7 +276,7 @@ window#waybar.empty #custom-powerbutton {
     box-shadow: inset 2px 0px @gruv-green;
 }
 
-#taskbar,
+
 #workspaces {
     background: transparent;
     border-radius: 0px;
