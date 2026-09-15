@@ -7,7 +7,10 @@ vim.keymap.set({ "n", "v" }, "<C-A-v>", '"+p', { desc = "Paste from system clipb
 vim.keymap.set("n", "<leader>t1", "<cmd>1ToggleTerm<CR>", { desc = "Toggle terminal 1" })
 vim.keymap.set("n", "<leader>t2", "<cmd>2ToggleTerm<CR>", { desc = "Toggle terminal 2" })
 vim.keymap.set("n", "<leader>t3", "<cmd>3ToggleTerm<CR>", { desc = "Toggle terminal 3" })
-vim.keymap.set("n", "<leader>sv", ":vsplit<CR>", { desc = "Vertical Split" })
+vim.keymap.set("n", "<leader>t4", "<cmd>4ToggleTerm<CR>", { desc = "Toggle terminal 4" })
+vim.keymap.set("n", "<leader>t5", "<cmd>5ToggleTerm<CR>", { desc = "Toggle terminal 5" })
+vim.keymap.set("n", "<leader>t6", "<cmd>6ToggleTerm<CR>", { desc = "Toggle terminal 6" })
+vim.keymap.set("n", "<leader>t7", "<cmd>7ToggleTerm<CR>", { desc = "Toggle terminal 7" })
 
 -- Use Alt + Arrow Keys to move between splits
 vim.keymap.set("n", "<A-Left>", "<C-w>h", { desc = "Move to left split" })
