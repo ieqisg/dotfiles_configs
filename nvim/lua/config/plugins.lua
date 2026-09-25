@@ -1,41 +1,66 @@
 return {
+  -- ==========================
   -- Treesitter + autotag
+  -- ==========================
+
   {
     "nvim-treesitter/nvim-treesitter",
     branch = "main",
     build = ":TSUpdate",
-    dependencies = { "windwp/nvim-ts-autotag" },
+    dependencies = {
+      "windwp/nvim-ts-autotag",
+    },
     config = function()
-      local ok, ts = pcall(require, "nvim-treesitter")
+      local ok, treesitter = pcall(require, "nvim-treesitter")
+
       if not ok then
-        vim.notify("nvim-treesitter failed to load", vim.log.levels.ERROR)
+        vim.notify(
+          "nvim-treesitter failed to load",
+          vim.log.levels.ERROR
+        )
         return
       end
 
-      ts.setup()
+      treesitter.setup()
 
-      local ts_filetypes = {
-        "html", "javascript", "typescript", "tsx",
-        "vue", "svelte", "php", "xml", "json", "css", "lua",
+      local parsers = {
+        "css",
+        "html",
+        "java",
+        "javascript",
+        "json",
+        "lua",
+        "php",
+        "svelte",
+        "tsx",
+        "typescript",
+        "vue",
+        "xml",
       }
 
-      if ts.install then
-        ts.install(ts_filetypes)
+      if treesitter.install then
+        treesitter.install(parsers)
       else
         vim.notify(
-          "nvim-treesitter: run :TSUpdate, then restart Neovim to finish setup",
+          "Run :TSUpdate and restart Neovim",
           vim.log.levels.WARN
         )
       end
 
-      local group = vim.api.nvim_create_augroup("TreesitterFtSetup", { clear = true })
+      local treesitter_group =
+          vim.api.nvim_create_augroup("TreesitterFtSetup", {
+            clear = true,
+          })
+
       vim.api.nvim_create_autocmd("FileType", {
-        group = group,
-        pattern = ts_filetypes,
+        group = treesitter_group,
+        pattern = parsers,
         callback = function(args)
           local started = pcall(vim.treesitter.start, args.buf)
+
           if started then
-            vim.bo[args.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+            vim.bo[args.buf].indentexpr =
+            "v:lua.require'nvim-treesitter'.indentexpr()"
           end
         end,
       })
@@ -51,17 +76,20 @@ return {
   },
 
   -- Highlight matching tags
-  { "andymass/vim-matchup",        event = "BufReadPost" },
+  {
+    "andymass/vim-matchup",
+    event = "BufReadPost",
+  },
 
   -- ==========================
-  -- Moonlight Colorscheme
+  -- Moonlight colorscheme
   -- ==========================
+
   {
     "shaunsingh/moonlight.nvim",
     lazy = false,
     priority = 1000,
     config = function()
-      -- Moonlight global settings
       vim.g.moonlight_italic_comments = true
       vim.g.moonlight_italic_keywords = false
       vim.g.moonlight_italic_functions = false
@@ -70,76 +98,134 @@ return {
       vim.g.moonlight_borders = false
       vim.g.moonlight_disable_background = true
 
-      -- Load colorscheme
       require("moonlight").set()
 
-      -- Custom Highlights (AFTER colorscheme loads)
       local function custom_highlights()
-        local colors = require("moonlight.colors")
         local set = vim.api.nvim_set_hl
 
-        -- UI
-        set(0, "CursorLine", { bg = "#1c1e2b" })            -- deep navy-gray
-        set(0, "LineNr", { fg = "#6b7089" })                -- cool gray
-        set(0, "CursorLineNr", { fg = "#89b4fa", bold = true }) -- icy blue
-        set(0, "Visual", { bg = "#3a3f5c" })                -- muted indigo
+        set(0, "CursorLine", {
+          bg = "#1c1e2b",
+        })
 
-        -- Cursor (moonlit teal glow)
-        set(0, "Cursor", { bg = "#5de4c7", fg = "#1c1e2b" })
+        set(0, "LineNr", {
+          fg = "#6b7089",
+        })
 
-        -- Comments
-        set(0, "Comment", { fg = "#a6accd", italic = true }) -- silvery mist
+        set(0, "CursorLineNr", {
+          fg = "#89b4fa",
+          bold = true,
+        })
 
-        -- Keywords
-        set(0, "Keyword", { fg = "#c792ea", bold = true }) -- violet
+        set(0, "Visual", {
+          bg = "#3a3f5c",
+        })
 
-        -- Functions
-        set(0, "Function", { fg = "#82aaff", bold = true }) -- sky blue for normal functions
-        set(0, "@function.call", { fg = "#c792ea" })    -- violet for user-defined calls (like setSearchTerm)
-        set(0, "@method", { fg = "#82aaff" })           -- keep methods sky blue
+        set(0, "Cursor", {
+          bg = "#5de4c7",
+          fg = "#1c1e2b",
+        })
 
-        -- Strings
-        set(0, "String", { fg = "#9ece6a" }) -- soft green
+        set(0, "Comment", {
+          fg = "#a6accd",
+          italic = true,
+        })
 
-        -- Variables
-        set(0, "@variable", { fg = "#ffcb6b" })                  -- golden yellow for normal variables
-        set(0, "@variable.builtin", { fg = "#5de4c7", bold = true }) -- teal glow for built-ins
-        set(0, "@parameter", { fg = "#f78c6c" })                 -- coral orange for arguments
+        set(0, "Keyword", {
+          fg = "#c792ea",
+          bold = true,
+        })
 
-        -- Properties
-        set(0, "@field", { fg = "#7dcfff" }) -- aqua
-        set(0, "@property", { fg = "#7dcfff" })
+        set(0, "Function", {
+          fg = "#82aaff",
+          bold = true,
+        })
 
-        -- Constants
-        set(0, "@constant", { fg = "#f7768e", bold = true }) -- muted rose
+        set(0, "@function.call", {
+          fg = "#c792ea",
+        })
 
-        -- Booleans
-        set(0, "@boolean", { fg = "#c792ea", bold = true }) -- violet
+        set(0, "@method", {
+          fg = "#82aaff",
+        })
 
-        -- Numbers
-        set(0, "@number", { fg = "#f5a97f" }) -- peach-orange
+        set(0, "String", {
+          fg = "#9ece6a",
+        })
 
-        -- Operators
-        set(0, "@operator", { fg = "#89b4fa" }) -- icy blue
+        set(0, "@variable", {
+          fg = "#ffcb6b",
+        })
 
-        -- Types
-        set(0, "@type", { fg = "#5de4c7", bold = true })        -- teal
-        set(0, "@type.builtin", { fg = "#82aaff", italic = true }) -- sky blue
-        set(0, "@type.definition", { fg = "#c792ea", bold = true }) -- violet
+        set(0, "@variable.builtin", {
+          fg = "#5de4c7",
+          bold = true,
+        })
+
+        set(0, "@parameter", {
+          fg = "#f78c6c",
+        })
+
+        set(0, "@field", {
+          fg = "#7dcfff",
+        })
+
+        set(0, "@property", {
+          fg = "#7dcfff",
+        })
+
+        set(0, "@constant", {
+          fg = "#f7768e",
+          bold = true,
+        })
+
+        set(0, "@boolean", {
+          fg = "#c792ea",
+          bold = true,
+        })
+
+        set(0, "@number", {
+          fg = "#f5a97f",
+        })
+
+        set(0, "@operator", {
+          fg = "#89b4fa",
+        })
+
+        set(0, "@type", {
+          fg = "#5de4c7",
+          bold = true,
+        })
+
+        set(0, "@type.builtin", {
+          fg = "#82aaff",
+          italic = true,
+        })
+
+        set(0, "@type.definition", {
+          fg = "#c792ea",
+          bold = true,
+        })
       end
 
-      -- Apply immediately
       custom_highlights()
 
-      -- Reapply on colorscheme reload
+      local colorscheme_group =
+          vim.api.nvim_create_augroup("MoonlightHighlights", {
+            clear = true,
+          })
+
       vim.api.nvim_create_autocmd("ColorScheme", {
+        group = colorscheme_group,
         pattern = "moonlight",
         callback = custom_highlights,
       })
     end,
   },
 
+  -- ==========================
   -- Terminal
+  -- ==========================
+
   {
     "akinsho/toggleterm.nvim",
     version = "*",
@@ -147,35 +233,56 @@ return {
       require("toggleterm").setup({
         open_mapping = [[<C-\>]],
         direction = "float",
-        float_opts = { border = "rounded" },
+        float_opts = {
+          border = "rounded",
+        },
       })
     end,
   },
 
-  -- Comment
+  -- ==========================
+  -- Comments
+  -- ==========================
+
   {
     "numToStr/Comment.nvim",
-    dependencies = { "JoosepAlviste/nvim-ts-context-commentstring" },
+    dependencies = {
+      "JoosepAlviste/nvim-ts-context-commentstring",
+    },
     config = function()
       require("Comment").setup({
-        pre_hook = require("ts_context_commentstring.integrations.comment_nvim").create_pre_hook(),
+        pre_hook = require(
+          "ts_context_commentstring.integrations.comment_nvim"
+        ).create_pre_hook(),
       })
     end,
   },
 
+  -- ==========================
   -- Indent guides
+  -- ==========================
+
   {
     "lukas-reineke/indent-blankline.nvim",
     main = "ibl",
     config = function()
       require("ibl").setup({
-        indent = { char = "│" },
-        scope = { enabled = true, show_start = false, show_end = false },
+        indent = {
+          char = "│",
+        },
+        scope = {
+          enabled = true,
+          show_start = false,
+          show_end = false,
+        },
       })
     end,
   },
 
+  -- ==========================
   -- File explorer
+  -- ==========================
+
   {
     "nvim-neo-tree/neo-tree.nvim",
     branch = "v3.x",
@@ -186,22 +293,39 @@ return {
     },
     config = function()
       require("neo-tree").setup({})
-      vim.keymap.set("n", "<leader>e", "<cmd>Neotree toggle<CR>", { silent = true })
+
+      vim.keymap.set(
+        "n",
+        "<leader>e",
+        "<cmd>Neotree toggle<CR>",
+        {
+          silent = true,
+          desc = "Toggle file explorer",
+        }
+      )
     end,
   },
 
   -- Icons
-  { "nvim-tree/nvim-web-devicons", lazy = true },
+  {
+    "nvim-tree/nvim-web-devicons",
+    lazy = true,
+  },
 
-  -- Buffer tabs (VS Code-style)
+  -- ==========================
+  -- Buffer tabs
+  -- ==========================
+
   {
     "akinsho/bufferline.nvim",
     version = "*",
-    dependencies = "nvim-tree/nvim-web-devicons",
+    dependencies = {
+      "nvim-tree/nvim-web-devicons",
+    },
     config = function()
       require("bufferline").setup({
         options = {
-          mode = "buffers", -- THIS makes it behave like VS Code tabs
+          mode = "buffers",
           separator_style = "slant",
           show_buffer_close_icons = true,
           show_close_icon = false,
@@ -213,24 +337,94 @@ return {
     end,
   },
 
+  -- ==========================
   -- Telescope
+  -- ==========================
+
   {
     "nvim-telescope/telescope.nvim",
-    dependencies = { "nvim-lua/plenary.nvim" },
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+    },
     config = function()
       local builtin = require("telescope.builtin")
-      vim.keymap.set("n", "<leader>ff", builtin.find_files, {})
-      vim.keymap.set("n", "<leader>fg", builtin.live_grep, {})
-      vim.keymap.set("n", "<leader>fb", builtin.buffers, {})
+
+      vim.keymap.set(
+        "n",
+        "<leader>ff",
+        builtin.find_files,
+        { desc = "Find files" }
+      )
+
+      vim.keymap.set(
+        "n",
+        "<leader>fg",
+        builtin.live_grep,
+        { desc = "Live grep" }
+      )
+
+      vim.keymap.set(
+        "n",
+        "<leader>fb",
+        builtin.buffers,
+        { desc = "Find buffers" }
+      )
     end,
   },
 
-  -- LSP + Mason
-  { "williamboman/mason.nvim",          config = true },
-  { "williamboman/mason-lspconfig.nvim" },
-  { "neovim/nvim-lspconfig" },
+  -- ==========================
+  -- Mason and LSP
+  -- ==========================
 
+  {
+    "williamboman/mason.nvim",
+    opts = {},
+  },
+
+  {
+    "williamboman/mason-lspconfig.nvim",
+    dependencies = {
+      "williamboman/mason.nvim",
+      "neovim/nvim-lspconfig",
+    },
+  },
+
+  {
+    "neovim/nvim-lspconfig",
+  },
+
+  -- ==========================
+  -- Java
+  -- ==========================
+
+  {
+    "nvim-java/nvim-java",
+    ft = { "java" },
+    dependencies = {
+      "MunifTanjim/nui.nvim",
+      "mfussenegger/nvim-dap",
+      "neovim/nvim-lspconfig",
+    },
+    config = function()
+      require("java").setup({
+        jdk = {
+          auto_install = false,
+          path = "/usr/lib/jvm/java-21-openjdk",
+        },
+      })
+
+      vim.lsp.config("jdtls", {
+        capabilities =
+            require("cmp_nvim_lsp").default_capabilities(),
+      })
+
+      vim.lsp.enable("jdtls")
+    end,
+  },
+  -- ==========================
   -- Autocompletion
+  -- ==========================
+
   {
     "hrsh7th/nvim-cmp",
     dependencies = {
@@ -240,41 +434,69 @@ return {
     },
     config = function()
       local cmp = require("cmp")
+
       cmp.setup({
         mapping = cmp.mapping.preset.insert({
           ["<C-Space>"] = cmp.mapping.complete(),
-          ["<CR>"] = cmp.mapping.confirm({ select = true }),
+
+          ["<CR>"] = cmp.mapping.confirm({
+            select = true,
+          }),
+
           ["<Tab>"] = cmp.mapping.select_next_item(),
+
           ["<S-Tab>"] = cmp.mapping.select_prev_item(),
         }),
-        sources = {
-          { name = "nvim_lsp" },
-          { name = "buffer" },
-          { name = "path" },
-        },
+
+        sources = cmp.config.sources({
+          {
+            name = "nvim_lsp",
+          },
+          {
+            name = "path",
+          },
+          {
+            name = "buffer",
+          },
+        }),
       })
     end,
   },
+
+  -- ==========================
+  -- Autopairs
+  -- ==========================
+
   {
     "windwp/nvim-autopairs",
     event = "InsertEnter",
-    dependencies = { "hrsh7th/nvim-cmp" },
+    dependencies = {
+      "hrsh7th/nvim-cmp",
+    },
     config = function()
-      local npairs = require("nvim-autopairs")
-      npairs.setup({
-        check_ts = true, -- integrates with treesitter
+      local autopairs = require("nvim-autopairs")
+
+      autopairs.setup({
+        check_ts = true,
         enable_check_bracket_line = true,
-        map_cr = true, -- map <CR> to confirm brackets
+        map_cr = true,
       })
 
-      -- Integrate with nvim-cmp
-      local cmp_autopairs = require("nvim-autopairs.completion.cmp")
       local cmp = require("cmp")
-      cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
+      local cmp_autopairs =
+          require("nvim-autopairs.completion.cmp")
+
+      cmp.event:on(
+        "confirm_done",
+        cmp_autopairs.on_confirm_done()
+      )
     end,
   },
 
+  -- ==========================
   -- Formatting
+  -- ==========================
+
   {
     "stevearc/conform.nvim",
     event = "BufWritePre",
@@ -289,7 +511,11 @@ return {
           css = { "prettier" },
           json = { "prettier" },
         },
-        format_on_save = { timeout_ms = 500, lsp_fallback = true },
+
+        format_on_save = {
+          timeout_ms = 500,
+          lsp_format = "fallback",
+        },
       })
     end,
   },

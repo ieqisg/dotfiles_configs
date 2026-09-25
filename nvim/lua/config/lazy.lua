@@ -1,9 +1,11 @@
 -- ==========================
 -- Bootstrap lazy.nvim
 -- ==========================
+
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+
 if not vim.uv.fs_stat(lazypath) then
-  vim.fn.system({
+  local result = vim.fn.system({
     "git",
     "clone",
     "--filter=blob:none",
@@ -11,15 +13,28 @@ if not vim.uv.fs_stat(lazypath) then
     "--branch=stable",
     lazypath,
   })
+
+  if vim.v.shell_error ~= 0 then
+    error("Failed to install lazy.nvim:\n" .. result)
+  end
 end
+
 vim.opt.rtp:prepend(lazypath)
 
 -- ==========================
 -- Plugins
 -- ==========================
+
 require("lazy").setup(require("config.plugins"), {
-  install = { colorscheme = { "moonlight" } },
-  checker = { enabled = true, notify = false },
+  install = {
+    colorscheme = { "moonlight" },
+  },
+
+  checker = {
+    enabled = true,
+    notify = false,
+  },
+
   performance = {
     rtp = {
       disabled_plugins = {
