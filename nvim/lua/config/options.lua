@@ -1,5 +1,5 @@
 -- ==========================
--- options.lua
+-- Leader & Basic Settings
 -- ==========================
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "

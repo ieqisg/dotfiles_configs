@@ -1,6 +1,6 @@
 return {
   -- ==========================
-  -- plugins.lua
+  -- Treesitter + autotag
   -- ==========================
 
   {
@@ -86,25 +86,142 @@ return {
   -- ==========================
 
   {
-    "oxidescheme/nvim",
-    name = "oxide",
+    "shaunsingh/moonlight.nvim",
     lazy = false,
     priority = 1000,
     config = function()
-      require("oxide").setup({
-        transparent = false, -- matches your old moonlight_disable_background
-        styles = {
-          comments = { italic = true },
-        },
-        on_highlights = function(highlights, colors)
-          highlights.CursorLine = { bg = "#1c1e2b" }
-          highlights.Cursor = { bg = "red", fg = "black" }
-        end,
-      })
+      vim.g.moonlight_italic_comments = true
+      vim.g.moonlight_italic_keywords = false
+      vim.g.moonlight_italic_functions = false
+      vim.g.moonlight_italic_variables = false
+      vim.g.moonlight_contrast = true
+      vim.g.moonlight_borders = false
+      vim.g.moonlight_disable_background = true
 
-      vim.cmd.colorscheme("oxide")
+      require("moonlight").set()
+
+      local function custom_highlights()
+        local set = vim.api.nvim_set_hl
+
+        set(0, "CursorLine", {
+          bg = "#1c1e2b",
+        })
+
+        set(0, "LineNr", {
+          fg = "#6b7089",
+        })
+
+        set(0, "CursorLineNr", {
+          fg = "#89b4fa",
+          bold = true,
+        })
+
+        set(0, "Visual", {
+          bg = "#3a3f5c",
+        })
+
+        set(0, "Cursor", {
+          bg = "#5de4c7",
+          fg = "#1c1e2b",
+        })
+
+        set(0, "Comment", {
+          fg = "#a6accd",
+          italic = true,
+        })
+
+        set(0, "Keyword", {
+          fg = "#c792ea",
+          bold = true,
+        })
+
+        set(0, "Function", {
+          fg = "#82aaff",
+          bold = true,
+        })
+
+        set(0, "@function.call", {
+          fg = "#c792ea",
+        })
+
+        set(0, "@method", {
+          fg = "#82aaff",
+        })
+
+        set(0, "String", {
+          fg = "#9ece6a",
+        })
+
+        set(0, "@variable", {
+          fg = "#ffcb6b",
+        })
+
+        set(0, "@variable.builtin", {
+          fg = "#5de4c7",
+          bold = true,
+        })
+
+        set(0, "@parameter", {
+          fg = "#f78c6c",
+        })
+
+        set(0, "@field", {
+          fg = "#7dcfff",
+        })
+
+        set(0, "@property", {
+          fg = "#7dcfff",
+        })
+
+        set(0, "@constant", {
+          fg = "#f7768e",
+          bold = true,
+        })
+
+        set(0, "@boolean", {
+          fg = "#c792ea",
+          bold = true,
+        })
+
+        set(0, "@number", {
+          fg = "#f5a97f",
+        })
+
+        set(0, "@operator", {
+          fg = "#89b4fa",
+        })
+
+        set(0, "@type", {
+          fg = "#5de4c7",
+          bold = true,
+        })
+
+        set(0, "@type.builtin", {
+          fg = "#82aaff",
+          italic = true,
+        })
+
+        set(0, "@type.definition", {
+          fg = "#c792ea",
+          bold = true,
+        })
+      end
+
+      custom_highlights()
+
+      local colorscheme_group =
+          vim.api.nvim_create_augroup("MoonlightHighlights", {
+            clear = true,
+          })
+
+      vim.api.nvim_create_autocmd("ColorScheme", {
+        group = colorscheme_group,
+        pattern = "moonlight",
+        callback = custom_highlights,
+      })
     end,
   },
+
   -- ==========================
   -- Terminal
   -- ==========================
@@ -402,30 +519,4 @@ return {
       })
     end,
   },
-  {
-    "nvim-lualine/lualine.nvim",
-    dependencies = {
-      "nvim-tree/nvim-web-devicons",
-    },
-    config = function()
-      require("lualine").setup({
-        options = {
-          theme = "oxide",
-          globalstatus = true,
-          component_separators = "",
-          section_separators = "",
-        },
-        sections = {
-          lualine_a = { "mode" },
-          lualine_b = {},
-          lualine_c = {
-            { "filename", path = 1 },
-          },
-          lualine_x = { "filetype" },
-          lualine_y = { "progress" },
-          lualine_z = { "location" },
-        },
-      })
-    end,
-  }
 }
