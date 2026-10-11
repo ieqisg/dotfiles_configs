@@ -1,5 +1,5 @@
 -- ==========================
--- Bootstrap lazy.nvim
+-- lazy.lua
 -- ==========================
 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
@@ -27,7 +27,7 @@ vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup(require("config.plugins"), {
   install = {
-    colorscheme = { "moonlight" },
+    colorscheme = { "oxide" },
   },
 
   checker = {
