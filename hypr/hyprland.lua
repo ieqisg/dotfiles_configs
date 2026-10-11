@@ -94,7 +94,7 @@ hl.config({
     gaps_in          = 2,
     gaps_out         = 10,
 
-    border_size      = 2,
+    border_size      = 0,
 
     col              = {
       active_border   = { colors = { "rgba(0, 0, 0, 1)", "rgba(255, 255, 255, 1)", "rgba(255, 215, 0, 1)", "rgba(255, 255, 255, 1)", "rgba(0, 0, 0, 1)" }, angle = 20 },
@@ -393,6 +393,12 @@ hl.window_rule({
 hl.window_rule({
   name    = "chromium",
   match   = { class = "chromium" },
+  opacity = "1.0 override 1.0 override 1.0 override"
+})
+
+hl.window_rule({
+  name    = "kitty",
+  match   = { class = "kitty" },
   opacity = "1.0 override 1.0 override 1.0 override"
 })
 

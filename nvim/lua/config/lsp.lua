@@ -1,10 +1,5 @@
--- ==========================
--- LSP Setup
--- ==========================
-
 local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
--- Configure non-Java language servers.
 vim.lsp.config("ts_ls", {
   capabilities = capabilities,
 })
@@ -17,8 +12,7 @@ vim.lsp.config("pyright", {
   capabilities = capabilities,
 })
 
--- Mason installs and enables these servers.
--- jdtls is intentionally excluded because nvim-java manages it.
+-- jdtls is managed by nvim-java.
 require("mason-lspconfig").setup({
   ensure_installed = {
     "ts_ls",
@@ -27,10 +21,6 @@ require("mason-lspconfig").setup({
   },
   automatic_enable = true,
 })
-
--- ==========================
--- Diagnostics
--- ==========================
 
 vim.diagnostic.config({
   virtual_text = true,
@@ -45,7 +35,7 @@ vim.diagnostic.config({
 })
 
 local diagnostic_group =
-    vim.api.nvim_create_augroup("DiagnosticFloat", { clear = true })
+  vim.api.nvim_create_augroup("DiagnosticFloat", { clear = true })
 
 vim.api.nvim_create_autocmd("CursorHold", {
   group = diagnostic_group,

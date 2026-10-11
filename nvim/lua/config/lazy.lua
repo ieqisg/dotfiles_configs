@@ -1,7 +1,3 @@
--- ==========================
--- Bootstrap lazy.nvim
--- ==========================
-
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 
 if not vim.uv.fs_stat(lazypath) then
@@ -21,20 +17,14 @@ end
 
 vim.opt.rtp:prepend(lazypath)
 
--- ==========================
--- Plugins
--- ==========================
-
 require("lazy").setup(require("config.plugins"), {
   install = {
-    colorscheme = { "moonlight" },
+    colorscheme = { "oxide" },
   },
-
   checker = {
     enabled = true,
     notify = false,
   },
-
   performance = {
     rtp = {
       disabled_plugins = {
