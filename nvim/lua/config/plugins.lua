@@ -281,9 +281,18 @@ return {
       "nvim-tree/nvim-web-devicons",
     },
     config = function()
+      local theme      = require("lualine.themes.oxide")
+
+      theme.normal.a   = { fg = "#111318", bg = "#89b4fa", gui = "bold" }
+      theme.insert.a   = { fg = "#111318", bg = "#a6e3a1", gui = "bold" }
+      theme.visual.a   = { fg = "#111318", bg = "#cba6f7", gui = "bold" }
+      theme.replace.a  = { fg = "#111318", bg = "#f38ba8", gui = "bold" }
+      theme.command.a  = { fg = "#111318", bg = "#f9e2af", gui = "bold" }
+      theme.terminal.a = { fg = "#111318", bg = "#94e2d5", gui = "bold" }
+
       require("lualine").setup({
         options = {
-          theme = "oxide",
+          theme = theme,
           globalstatus = true,
           component_separators = "",
           section_separators = "",
@@ -291,9 +300,7 @@ return {
         sections = {
           lualine_a = { "mode" },
           lualine_b = {},
-          lualine_c = {
-            { "filename", path = 1 },
-          },
+          lualine_c = { { "filename", path = 1 } },
           lualine_x = { "filetype" },
           lualine_y = { "progress" },
           lualine_z = { "location" },
