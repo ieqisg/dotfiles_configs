@@ -311,7 +311,17 @@ return {
         sections = {
           lualine_a = { "mode" },
           lualine_b = {},
-          lualine_c = { { "filename", path = 1 } },
+          lualine_c = {
+            { "filename", path = 1 },
+            {
+              "diagnostics",
+              sources = { "nvim_diagnostic" },
+              sections = { "error", "warn", "info", "hint" },
+              symbols = { error = " ", warn = " ", info = " ", hint = " " },
+              update_in_insert = true,
+              always_visible = true,
+            },
+          },
           lualine_x = { "filetype" },
           lualine_y = { "progress" },
           lualine_z = { "location" },
