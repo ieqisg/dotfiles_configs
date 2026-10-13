@@ -263,6 +263,7 @@ hl.device({
 local mainMod = "SUPER" -- Sets "Windows" key as main modifier
 
 -- Example binds, see https://wiki.hypr.land/Configuring/Basics/Binds/ for more
+hl.bind(mainMod .. " + F12", hl.dsp.exec_cmd("postman"))
 hl.bind(mainMod .. " + T", hl.dsp.exec_cmd(terminal))
 hl.bind(mainMod .. " + C", hl.dsp.exec_cmd("chromium"))
 hl.bind(mainMod .. " + F1", hl.dsp.exec_cmd("pulseaudio"))
@@ -401,6 +402,20 @@ hl.window_rule({
   match   = { class = "kitty" },
   opacity = "1.0 override 1.0 override 1.0 override"
 })
+
+hl.window_rule({
+  name    = "OBS",
+  match   = { class = "com.obsproject.Studio" },
+  opacity = "1.0 override 1.0 override 1.0 override"
+})
+
+hl.window_rule({
+  name    = "postman",
+  match   = { class = "Postman" },
+  opacity = "1.0 override 1.0 override 1.0 override"
+})
+
+
 
 
 
