@@ -217,17 +217,28 @@ return {
     },
     config = function()
       local cmp = require("cmp")
+
       cmp.setup({
+        window = {
+          completion = cmp.config.window.bordered({ border = "rounded" }),
+          documentation = cmp.config.window.bordered({ border = "rounded" }),
+        },
+
+        performance = {
+          max_view_entries = 5,
+        },
+
         mapping = cmp.mapping.preset.insert({
           ["<C-Space>"] = cmp.mapping.complete(),
           ["<CR>"] = cmp.mapping.confirm({ select = true }),
           ["<Tab>"] = cmp.mapping.select_next_item(),
           ["<S-Tab>"] = cmp.mapping.select_prev_item(),
         }),
+
         sources = cmp.config.sources({
           { name = "nvim_lsp" },
           { name = "path" },
-          { name = "buffer" },
+          { name = "buffer",  keyword_length = 3 },
         }),
       })
     end,
