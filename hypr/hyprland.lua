@@ -64,6 +64,12 @@ local menu        = "rofi"
 hl.env("XCURSOR_SIZE", "24")
 hl.env("HYPRCURSOR_SIZE", "24")
 
+hl.config({
+  xwayland = {
+    force_zero_scaling = true,
+  },
+})
+
 
 -----------------------
 ----- PERMISSIONS -----
@@ -372,6 +378,8 @@ hl.window_rule({
 
   no_focus = true,
 })
+
+
 
 -- Layer rules also return a handle.
 -- local overlayLayerRule = hl.layer_rule({
