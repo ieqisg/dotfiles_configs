@@ -1,4 +1,3 @@
-
 @define-color gruv-blue         rgba(69, 133, 136, 0.8);
 @define-color gruv-green        rgba(104, 157, 106, 0.8);
 @define-color gruv-magenta      rgba(177, 98, 134, 0.8);
@@ -19,21 +18,19 @@
     font-family: 'DaddyTimeMono Nerd Font Propo';
     font-size: 13px;
     /*border-radius: 0px;*/
-    transition: 0.5s ease-out;
+    transition: none;
 }
 
 window#waybar {
     background-color: @background-blue;
     color: @text-white;
-    transition-property: background-color;
-    transition: 1s ease-in-out;
+    transition: background-color 1s ease-in-out;
     border-radius: 0px 5px 5px 0px;
 }
 
 window#waybar.empty {
     /*opacity: 0.0;*/
     background-color: @hover-black;
-    transition-duration: 0.5s;
     border-radius: 0px 20px 20px 0px;
 }
 
@@ -46,6 +43,7 @@ button:hover {
     background: inherit;
     box-shadow: inset 2px 0px @gruv-beige;
 }
+
 #custom-workspaces,
 #custom-powerbutton,
 #custom-reboot,
@@ -56,7 +54,7 @@ button:hover {
 #custom-wallpaper,
 #user,
 button,
-#window, 
+#window,
 #network,
 #custom-appmenu,
 #backlight,
@@ -66,7 +64,7 @@ button,
 #battery,
 #cpu,
 #memory,
-#clock { 
+#clock {
     padding: 10px 0px;
     color: @text-white;
     background: transparent;
@@ -101,7 +99,6 @@ window#waybar.empty #clock {
 #pulseaudio.muted:hover,
 #pulseaudio:hover {
     color: @gruv-magenta;
-    transition-duration: .5s;
     background-color: @hover-black;
 }
 
@@ -172,11 +169,10 @@ window#waybar.empty #clock {
     background: @gruv-orange;
 }
 
-#battery:hover, 
-#battery.charging:hover, 
+#battery:hover,
+#battery.charging:hover,
 #battery.plugged:hover {
     color: @gruv-green;
-    transition-duration: .5s;
     background-color: @hover-black;
 }
 
@@ -196,17 +192,23 @@ window#waybar.empty #clock {
 }
 
 #taskbar {
-  margin: 4px 0px;
+    margin: 4px 0px;
 }
 
 #taskbar button {
-    padding: 4px 2px;        /* was 5px 0 */
+    padding: 4px 2px;
     min-width: 0;
     font-size: 12px;
+    transition: none;
 }
 
 #taskbar button.active {
     box-shadow: inset 2px 0px @gruv-lime;
+    transition: none;
+}
+
+#taskbar button:hover {
+    transition: background-color 0.15s ease-out;
 }
 
 #custom-appmenu:hover {
@@ -276,21 +278,18 @@ window#waybar.empty #custom-powerbutton {
     box-shadow: inset 2px 0px @gruv-green;
 }
 
-
 #workspaces {
     background: transparent;
     border-radius: 0px;
     margin: 10px 0px;
 }
 
-
-
 #workspaces button {
     padding: 7px 0px;
     background-color: transparent;
     color: @text-white;
     border-radius: 0px;
-    transition: 0.2s ease-in-out;
+    transition: none;
     font-size: 15px;
 }
 
@@ -298,7 +297,8 @@ window#waybar.empty #custom-powerbutton {
     background-color: @mute-black;
     border-radius: 0px;
     font-weight: 900;
-    box-shadow: inset 2px 0px @gruv-red
+    box-shadow: inset 2px 0px @gruv-red;
+    transition: none;
 }
 
 #workspaces button.active:hover {
@@ -307,6 +307,7 @@ window#waybar.empty #custom-powerbutton {
 
 #workspaces button:hover {
     background: @hover-black;
+    transition: background-color 0.15s ease-out;
 }
 
 #workspaces button.focused {
@@ -341,11 +342,11 @@ window#waybar.empty #custom-powerbutton {
 }
 
 #cpu {
-  box-shadow: inset 2px 0px @gruv-lime;
-  font-size: 12px
+    box-shadow: inset 2px 0px @gruv-lime;
+    font-size: 12px;
 }
 
 #memory {
-  box-shadow: inset 2px 0px @gruv-magenta;
-  font-size: 12px
+    box-shadow: inset 2px 0px @gruv-magenta;
+    font-size: 12px;
 }

@@ -139,36 +139,36 @@ hl.config({
 })
 
 
-local prod = function(ds)
-  return ds * hyde.config.anim.duration_scale
-end
+-- local prod = function(ds)
+--   return ds * hyde.config.anim.duration_scale
+-- end
 
-hl.curve("myBezier", { type = "bezier", points = { { 0.05, 0.9 }, { 0.1, 1.05 } } })
-hl.animation({ leaf = "windows", enabled = true, speed = prod(7), bezier = "myBezier" })
-hl.animation({ leaf = "windowsOut", enabled = true, speed = prod(7), bezier = "default", style = "popin 80%" })
-hl.animation({ leaf = "border", enabled = true, speed = prod(10), bezier = "default" })
-hl.animation({ leaf = "borderangle", enabled = true, speed = prod(8), bezier = "default" })
-hl.animation({ leaf = "fade", enabled = true, speed = prod(7), bezier = "default" })
-hl.animation({ leaf = "workspaces", enabled = true, speed = prod(6), bezier = "default" })
-hl.animation({ leaf = "windowsIn", enabled = true, speed = prod(7), bezier = "myBezier" })
-hl.animation({ leaf = "windowsMove", enabled = true, speed = prod(7), bezier = "myBezier" })
-hl.animation({ leaf = "fadeIn", enabled = true, speed = prod(7), bezier = "default" })
-hl.animation({ leaf = "fadeOut", enabled = true, speed = prod(7), bezier = "default" })
-hl.animation({ leaf = "fadeSwitch", enabled = true, speed = prod(7), bezier = "default" })
-hl.animation({ leaf = "fadeShadow", enabled = true, speed = prod(7), bezier = "default" })
-hl.animation({ leaf = "fadeDim", enabled = true, speed = prod(7), bezier = "default" })
-hl.animation({ leaf = "fadeLayers", enabled = true, speed = prod(7), bezier = "default" })
-hl.animation({ leaf = "fadeLayersIn", enabled = true, speed = prod(7), bezier = "default" })
-hl.animation({ leaf = "fadeLayersOut", enabled = true, speed = prod(7), bezier = "default" })
-hl.animation({ leaf = "fadePopups", enabled = true, speed = prod(7), bezier = "default" })
-hl.animation({ leaf = "fadePopupsIn", enabled = true, speed = prod(7), bezier = "default" })
-hl.animation({ leaf = "fadePopupsOut", enabled = true, speed = prod(7), bezier = "default" })
-hl.animation({ leaf = "fadeDpms", enabled = true, speed = prod(7), bezier = "default" })
-hl.animation({ leaf = "workspacesIn", enabled = true, speed = prod(6), bezier = "default" })
-hl.animation({ leaf = "workspacesOut", enabled = true, speed = prod(6), bezier = "default" })
-hl.animation({ leaf = "specialWorkspace", enabled = true, speed = prod(6), bezier = "default" })
-hl.animation({ leaf = "specialWorkspaceIn", enabled = true, speed = prod(6), bezier = "default" })
-hl.animation({ leaf = "specialWorkspaceOut", enabled = true, speed = prod(6), bezier = "default" }) -- Ref https://wiki.hypr.land/Configuring/Basics/Workspace-Rules/
+-- hl.curve("myBezier", { type = "bezier", points = { { 0.05, 0.9 }, { 0.1, 1.05 } } })
+-- hl.animation({ leaf = "windows", enabled = true, speed = prod(7), bezier = "myBezier" })
+-- hl.animation({ leaf = "windowsOut", enabled = true, speed = prod(7), bezier = "default", style = "popin 80%" })
+-- hl.animation({ leaf = "border", enabled = true, speed = prod(10), bezier = "default" })
+-- hl.animation({ leaf = "borderangle", enabled = true, speed = prod(8), bezier = "default" })
+-- hl.animation({ leaf = "fade", enabled = true, speed = prod(7), bezier = "default" })
+-- hl.animation({ leaf = "workspaces", enabled = true, speed = prod(6), bezier = "default" })
+-- hl.animation({ leaf = "windowsIn", enabled = true, speed = prod(7), bezier = "myBezier" })
+-- hl.animation({ leaf = "windowsMove", enabled = true, speed = prod(7), bezier = "myBezier" })
+-- hl.animation({ leaf = "fadeIn", enabled = true, speed = prod(7), bezier = "default" })
+-- hl.animation({ leaf = "fadeOut", enabled = true, speed = prod(7), bezier = "default" })
+-- hl.animation({ leaf = "fadeSwitch", enabled = true, speed = prod(7), bezier = "default" })
+-- hl.animation({ leaf = "fadeShadow", enabled = true, speed = prod(7), bezier = "default" })
+-- hl.animation({ leaf = "fadeDim", enabled = true, speed = prod(7), bezier = "default" })
+-- hl.animation({ leaf = "fadeLayers", enabled = true, speed = prod(7), bezier = "default" })
+-- hl.animation({ leaf = "fadeLayersIn", enabled = true, speed = prod(7), bezier = "default" })
+-- hl.animation({ leaf = "fadeLayersOut", enabled = true, speed = prod(7), bezier = "default" })
+-- hl.animation({ leaf = "fadePopups", enabled = true, speed = prod(7), bezier = "default" })
+-- hl.animation({ leaf = "fadePopupsIn", enabled = true, speed = prod(7), bezier = "default" })
+-- hl.animation({ leaf = "fadePopupsOut", enabled = true, speed = prod(7), bezier = "default" })
+-- hl.animation({ leaf = "fadeDpms", enabled = true, speed = prod(7), bezier = "default" })
+-- hl.animation({ leaf = "workspacesIn", enabled = true, speed = prod(6), bezier = "default" })
+-- hl.animation({ leaf = "workspacesOut", enabled = true, speed = prod(6), bezier = "default" })
+-- hl.animation({ leaf = "specialWorkspace", enabled = true, speed = prod(6), bezier = "default" })
+-- hl.animation({ leaf = "specialWorkspaceIn", enabled = true, speed = prod(6), bezier = "default" })
+-- hl.animation({ leaf = "specialWorkspaceOut", enabled = true, speed = prod(6), bezier = "default" }) -- Ref https://wiki.hypr.land/Configuring/Basics/Workspace-Rules/
 -- "Smart gaps" / "No gaps when only"
 -- uncomment all if you wish to use that.
 -- hl.workspace_rule({ workspace = "w[tv1]", gaps_out = 0, gaps_in = 0 })
@@ -233,11 +233,10 @@ hl.config({
 
     follow_mouse = 1,
 
-    sensitivity  = .75, -- -1.0 - 1.0, 0 means no modification.
+    sensitivity  = .85, -- -1.0 - 1.0, 0 means no modification.
 
     touchpad     = {
       natural_scroll = true,
-      scroll_factor = 0.1
     },
   },
 })
@@ -263,6 +262,7 @@ hl.device({
 local mainMod = "SUPER" -- Sets "Windows" key as main modifier
 
 -- Example binds, see https://wiki.hypr.land/Configuring/Basics/Binds/ for more
+
 hl.bind(mainMod .. " + F12", hl.dsp.exec_cmd("postman"))
 hl.bind(mainMod .. " + T", hl.dsp.exec_cmd(terminal))
 hl.bind(mainMod .. " + C", hl.dsp.exec_cmd("chromium"))
@@ -275,14 +275,20 @@ hl.bind(mainMod .. " + E", hl.dsp.exec_cmd(fileManager))
 hl.bind("SUPER + B", hl.dsp.exec_cmd("brave"))
 hl.bind(mainMod .. " + V", hl.dsp.window.float({ action = "toggle" }))
 hl.bind(mainMod .. " + R", hl.dsp.exec_cmd(menu))
-hl.bind(mainMod .. " + P", hl.dsp.window.pseudo())
 hl.bind(mainMod .. " + J", hl.dsp.layout("togglesplit")) -- dwindle only
 hl.bind(mainMod .. " + F11", hl.dsp.exec_cmd("steam"))   --
+hl.bind(mainMod .. " + A", hl.dsp.exec_cmd("rofi -show drun -show-icons"))
 
+hl.bind(mainMod .. " + down", hl.dsp.focus({ direction = "down" }))
 hl.bind(mainMod .. " + left", hl.dsp.focus({ direction = "left" }))
 hl.bind(mainMod .. " + right", hl.dsp.focus({ direction = "right" }))
 hl.bind(mainMod .. " + up", hl.dsp.focus({ direction = "up" }))
-hl.bind(mainMod .. " + down", hl.dsp.focus({ direction = "down" }))
+hl.bind("Print",
+  hl.dsp.exec_cmd('grim - | satty -f - --copy-command wl-copy -o "~/Pictures/Screenshots/%Y%m%d_%H%M%S.png"'))
+hl.bind(mainMod .. " + P",
+  hl.dsp.exec_cmd('grim -g "$(slurp -o)" - | satty -f -'))
+hl.bind(mainMod .. " + L",
+  hl.dsp.exec_cmd("hyprlock"))
 
 -- Switch workspaces with mainMod + [0-9]
 -- Move active window to a workspace with mainMod + SHIFT + [0-9]
@@ -305,11 +311,17 @@ hl.bind(mainMod .. " + mouse:272", hl.dsp.window.drag(), { mouse = true })
 hl.bind(mainMod .. " + mouse:273", hl.dsp.window.resize(), { mouse = true })
 
 -- Laptop multimedia keys for volume and LCD brightness
-hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd("wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+"),
+hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd("swayosd-client --output-volume raise"),
   { locked = true, repeating = true })
-hl.bind("XF86AudioLowerVolume", hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"),
+hl.bind("F12", hl.dsp.exec_cmd("swayosd-client --output-volume raise"),
   { locked = true, repeating = true })
-hl.bind("XF86AudioMute", hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"),
+hl.bind("XF86AudioLowerVolume", hl.dsp.exec_cmd("swayosd-client --output-volume lower"),
+  { locked = true, repeating = true })
+hl.bind("F11", hl.dsp.exec_cmd("swayosd-client --output-volume lower"),
+  { locked = true, repeating = true })
+hl.bind("XF86AudioMute", hl.dsp.exec_cmd("swayosd-client --output-volume mute-toggle"),
+  { locked = true, repeating = true })
+hl.bind("F10", hl.dsp.exec_cmd("swayosd-client --output-volume mute-toggle"),
   { locked = true, repeating = true })
 hl.bind("XF86AudioMicMute", hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"),
   { locked = true, repeating = true })
@@ -416,13 +428,34 @@ hl.window_rule({
 })
 
 
-
-
-
-
-
-
 -- AUTOSTART --
--- hl.on("hyprland.start", function()
---   hl.exec_cmd("[workspace 2 silent] steam")
--- end)
+hl.on("hyprland.start", function()
+  local home = os.getenv("HOME")
+  hl.exec_cmd("waybar -c " ..
+    home .. "/.config/waybar/layouts/ceber.jsonc -s " .. home .. "/.config/waybar/styles/ceber.css & hyprpaper &")
+  hl.exec_cmd("swayosd-server")
+end)
+
+-- Load monitor layout generated by nwg-displays
+local monitors_file = os.getenv("HOME") .. "/.config/hypr/monitors.conf"
+local f = io.open(monitors_file, "r")
+if f then
+  for line in f:lines() do
+    local val = line:match("^%s*monitor%s*=%s*(.+)")
+    if val then
+      local parts = {}
+      for part in val:gmatch("[^,]+") do
+        table.insert(parts, part:match("^%s*(.-)%s*$"))
+      end
+      if #parts >= 4 then
+        hl.monitor({
+          output   = parts[1],
+          mode     = parts[2],
+          position = parts[3],
+          scale    = tonumber(parts[4]) or parts[4],
+        })
+      end
+    end
+  end
+  f:close()
+end

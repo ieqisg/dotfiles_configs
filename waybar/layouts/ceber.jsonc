@@ -36,7 +36,7 @@
     "group/right" : {
         "orientation": "horizontal",
         "modules" : [
-            "bluetooth", "group/group-volume", "group/group-backlight", "network", "tray"
+            "bluetooth", "group/group-volume", "group/group-backlight", "network" 
         ]
     },
 
@@ -209,7 +209,7 @@
         "tooltip-format": "{device_enumerate}",
         "tooltip-format-enumerate-connected": "{device_alias}",
         "tooltip-format-enumerate-connected-battery": "{device_alias}   {device_battery_percentage}%",
-        "on-click": "~/.local/bin/toggle_bluetooth &",
+        "on-click": "blueman-manager",
         "on-click-right": "hyprctl eval \"hl.exec_cmd('blueman-manager')\""
     },
 
@@ -229,7 +229,7 @@
     },
 
     "clock": {
-        "timezone": "America/Argentina/Buenos_Aires",
+        //"timezone": "America/Argentina/Buenos_Aires",
         "tooltip-format": "<tt><small>{calendar}</small></tt>",
         "format-alt": "{:%H:%M %d %B %Y}",
         "on-click-right": "hyprctl eval \"hl.exec_cmd('alacritty --class=peaclock -e peaclock')\"",
